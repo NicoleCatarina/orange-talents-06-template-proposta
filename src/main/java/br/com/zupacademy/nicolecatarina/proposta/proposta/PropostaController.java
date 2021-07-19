@@ -24,6 +24,12 @@ public class PropostaController {
     public ResponseEntity criarProposta(UriComponentsBuilder uriComponentsBuilder,
                                         @RequestBody @Valid PropostaRequest propostaRequest) {
 
+        boolean documentoJaCadastrado = propostaRepository.existsByDocumento(propostaRequest.getDocumento());
+
+        if (documentoJaCadastrado) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
         Proposta proposta = propostaRequest.toModel();
         Proposta novaProposta = propostaRepository.save(proposta);
         URI enderecoRecurso = uriComponentsBuilder.path("/propostas/{id}").build(novaProposta.getId());
