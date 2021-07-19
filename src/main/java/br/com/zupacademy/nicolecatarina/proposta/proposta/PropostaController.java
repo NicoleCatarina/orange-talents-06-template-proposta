@@ -1,5 +1,8 @@
 package br.com.zupacademy.nicolecatarina.proposta.proposta;
 
+import br.com.zupacademy.nicolecatarina.proposta.analisefinanceira.AnaliseFinanceiraClient;
+import br.com.zupacademy.nicolecatarina.proposta.analisefinanceira.AnaliseFinanceiraRequest;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,9 @@ public class PropostaController {
     @Autowired
     private PropostaRepository propostaRepository;
 
+    @Autowired
+    private AnaliseFinanceiraClient analiseFinanceiraClient;
+
     @Transactional
     @PostMapping
     public ResponseEntity criarProposta(UriComponentsBuilder uriComponentsBuilder,
@@ -30,8 +36,21 @@ public class PropostaController {
             return ResponseEntity.unprocessableEntity().build();
         }
 
-        Proposta proposta = propostaRequest.toModel();
-        Proposta novaProposta = propostaRepository.save(proposta);
+        var proposta = propostaRequest.toModel();
+        var novaProposta = propostaRepository.save(proposta);
+
+        try {
+            var validacaoRequest = new AnaliseFinanceiraRequest(
+                    String.valueOf(novaProposta.getId()),
+                    novaProposta.getDocumento(),
+                    novaProposta.getNome());
+
+            analiseFinanceiraClient.avaliarProposta(validacaoRequest);
+            novaProposta.setEstadoProposta(PropostaEstado.ELEGIVEL);
+        } catch (FeignException e) {
+            novaProposta.setEstadoProposta(PropostaEstado.NAO_ELEGIVEL);
+        }
+
         URI enderecoRecurso = uriComponentsBuilder.path("/propostas/{id}").build(novaProposta.getId());
         return ResponseEntity.created(enderecoRecurso).build();
     }
