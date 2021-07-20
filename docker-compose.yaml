@@ -1,16 +1,26 @@
 version: '3'
 services:
 
-  proposta:
+  proposta-banco:
     image: mysql:latest
-    container_name: proposta
+    container_name: proposta-banco
     ports:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=my-user
       - MYSQL_PASSWORD=123
-      - MYSQL_DATABASE=proposta
+      - MYSQL_DATABASE=proposta-banco
+
+  proposta:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: proposta
+    restart: on-failure
+    container_name: proposta
+    ports:
+      - "8080:8080"
 
   zookeeper:
     image: "confluentinc/cp-zookeeper:5.2.1"
