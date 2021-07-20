@@ -2,6 +2,7 @@ package br.com.zupacademy.nicolecatarina.proposta.proposta;
 
 import br.com.zupacademy.nicolecatarina.proposta.analisefinanceira.AnaliseFinanceiraClient;
 import br.com.zupacademy.nicolecatarina.proposta.analisefinanceira.AnaliseFinanceiraRequest;
+import br.com.zupacademy.nicolecatarina.proposta.exception.EntidadeNaoEncontradaException;
 import br.com.zupacademy.nicolecatarina.proposta.proposta.evento.PropostaCriadaEvent;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
@@ -29,6 +31,15 @@ public class PropostaController {
 
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    @GetMapping("/{id}")
+    public ResponseEntity buscar(@PathVariable Long id) {
+        Proposta proposta = propostaRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Não existe uma proposta com id %d", id)));
+
+        PropostaDetalhesResponse propostaDetalhesResponse = new PropostaDetalhesResponse(proposta);
+        return ResponseEntity.ok(propostaDetalhesResponse);
+    }
 
     @Transactional
     @PostMapping

@@ -19,6 +19,13 @@ public class ApiExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ErrorBody handleMethodArgumentNotValid(EntidadeNaoEncontradaException e) {
+        String mensagemDeErro = e.getMessage();
+        return buildErrorResponse(mensagemDeErro);
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorBody handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
@@ -32,6 +39,10 @@ public class ApiExceptionHandler {
                 .collect(Collectors.toList());
 
         return new ErrorBody(errorsBody);
+    }
+
+    private ErrorBody buildErrorResponse(String mensagemDeErro) {
+        return new ErrorBody(mensagemDeErro);
     }
 
     private String toSnakeCase(String campo) {
