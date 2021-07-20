@@ -2,8 +2,10 @@ package br.com.zupacademy.nicolecatarina.proposta.proposta;
 
 import br.com.zupacademy.nicolecatarina.proposta.analisefinanceira.AnaliseFinanceiraClient;
 import br.com.zupacademy.nicolecatarina.proposta.analisefinanceira.AnaliseFinanceiraRequest;
+import br.com.zupacademy.nicolecatarina.proposta.proposta.evento.PropostaCriadaEvent;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,9 @@ public class PropostaController {
     @Autowired
     private AnaliseFinanceiraClient analiseFinanceiraClient;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @Transactional
     @PostMapping
     public ResponseEntity criarProposta(UriComponentsBuilder uriComponentsBuilder,
@@ -39,6 +44,10 @@ public class PropostaController {
         var proposta = propostaRequest.toModel();
         var novaProposta = propostaRepository.save(proposta);
 
+        //TODO
+        //      Estudar como refatorar
+        //      Refatorar também para caso o link não responda (tirar setEstadoProposta do catch)
+
         try {
             var validacaoRequest = new AnaliseFinanceiraRequest(
                     String.valueOf(novaProposta.getId()),
@@ -49,6 +58,10 @@ public class PropostaController {
             novaProposta.setEstadoProposta(PropostaEstado.ELEGIVEL);
         } catch (FeignException e) {
             novaProposta.setEstadoProposta(PropostaEstado.NAO_ELEGIVEL);
+        }
+
+        if (novaProposta.eElegivel()) {
+            publisher.publishEvent(new PropostaCriadaEvent(novaProposta));
         }
 
         URI enderecoRecurso = uriComponentsBuilder.path("/propostas/{id}").build(novaProposta.getId());
