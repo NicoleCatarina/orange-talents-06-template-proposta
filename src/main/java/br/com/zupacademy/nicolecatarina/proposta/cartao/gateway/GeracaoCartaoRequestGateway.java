@@ -1,4 +1,4 @@
-package br.com.zupacademy.nicolecatarina.proposta.cartao;
+package br.com.zupacademy.nicolecatarina.proposta.cartao.gateway;
 
 public class GeracaoCartaoRequestGateway {
 

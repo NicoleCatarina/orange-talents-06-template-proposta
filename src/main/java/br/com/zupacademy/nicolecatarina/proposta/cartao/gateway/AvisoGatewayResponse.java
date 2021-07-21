@@ -1,12 +1,10 @@
-package br.com.zupacademy.nicolecatarina.proposta.cartao;
+package br.com.zupacademy.nicolecatarina.proposta.cartao.gateway;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
-public class Parcela {
+public class AvisoGatewayResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

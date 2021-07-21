@@ -1,5 +1,10 @@
 package br.com.zupacademy.nicolecatarina.proposta.cartao;
 
+import br.com.zupacademy.nicolecatarina.proposta.cartao.aviso.Aviso;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.carteira.Carteira;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.parcela.Parcela;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.vencimento.Vencimento;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -69,6 +74,10 @@ public class Cartao {
 
     @Deprecated
     public Cartao() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
 }

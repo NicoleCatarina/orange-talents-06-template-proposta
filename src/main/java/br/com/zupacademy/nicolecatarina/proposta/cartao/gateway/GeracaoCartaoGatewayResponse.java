@@ -1,4 +1,7 @@
-package br.com.zupacademy.nicolecatarina.proposta.cartao;
+package br.com.zupacademy.nicolecatarina.proposta.cartao.gateway;
+
+import br.com.zupacademy.nicolecatarina.proposta.cartao.Cartao;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.*;
 
 import java.time.LocalDateTime;
 import java.util.List;

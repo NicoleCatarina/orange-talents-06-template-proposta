@@ -1,4 +1,4 @@
-package br.com.zupacademy.nicolecatarina.proposta.cartao;
+package br.com.zupacademy.nicolecatarina.proposta.cartao.vencimento;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

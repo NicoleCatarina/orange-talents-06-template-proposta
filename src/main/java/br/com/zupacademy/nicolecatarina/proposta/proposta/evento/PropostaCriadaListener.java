@@ -1,7 +1,7 @@
 package br.com.zupacademy.nicolecatarina.proposta.proposta.evento;
 
-import br.com.zupacademy.nicolecatarina.proposta.cartao.CartaoClient;
-import br.com.zupacademy.nicolecatarina.proposta.cartao.GeracaoCartaoRequestGateway;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.CartaoClient;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.GeracaoCartaoRequestGateway;
 import br.com.zupacademy.nicolecatarina.proposta.proposta.Proposta;
 import br.com.zupacademy.nicolecatarina.proposta.proposta.PropostaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
