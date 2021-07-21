@@ -7,8 +7,8 @@ public class BloqueioGatewayResponse {
     private Long id;
     private Long idCartao;
 
-    public Bloqueio toModel() {
-        return new Bloqueio();
-    }
+//    public Bloqueio toModel() {
+//        return new Bloqueio();
+//    }
 
 }

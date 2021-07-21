@@ -1,12 +1,12 @@
 package br.com.zupacademy.nicolecatarina.proposta.cartao.gateway;
 
-public class GeracaoCartaoRequestGateway {
+public class GeracaoCartaoGatewayRequest {
 
     private String idProposta;
     private String documento;
     private String nome;
 
-    public GeracaoCartaoRequestGateway(String idProposta, String documento, String nome) {
+    public GeracaoCartaoGatewayRequest(String idProposta, String documento, String nome) {
         this.idProposta = idProposta;
         this.documento = documento;
         this.nome = nome;

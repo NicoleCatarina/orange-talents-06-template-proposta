@@ -1,7 +1,7 @@
 package br.com.zupacademy.nicolecatarina.proposta.proposta.evento;
 
 import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.CartaoClient;
-import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.GeracaoCartaoRequestGateway;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.GeracaoCartaoGatewayRequest;
 import br.com.zupacademy.nicolecatarina.proposta.proposta.Proposta;
 import br.com.zupacademy.nicolecatarina.proposta.proposta.PropostaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class PropostaCriadaListener {
         Proposta novaProposta = event.getProposta();
 
         try {
-            var geracaoCartaoRequest = new GeracaoCartaoRequestGateway(
+            var geracaoCartaoRequest = new GeracaoCartaoGatewayRequest(
                     String.valueOf(novaProposta.getId()),
                     novaProposta.getDocumento(),
                     novaProposta.getNome());

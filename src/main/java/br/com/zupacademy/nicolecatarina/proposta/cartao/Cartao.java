@@ -80,4 +80,15 @@ public class Cartao {
         return id;
     }
 
+    public String getNumero() {
+        return numero;
+    }
+
+    public void associarBloqueio(Bloqueio bloqueio) {
+        this.bloqueios.add(bloqueio);
+    }
+
+    public boolean estaBloqueado() {
+        return !this.bloqueios.isEmpty();
+    }
 }

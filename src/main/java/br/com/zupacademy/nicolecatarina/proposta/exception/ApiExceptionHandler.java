@@ -19,9 +19,24 @@ public class ApiExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(RegraVioladaException.class)
+    public ErrorBody handleRegraVioladaException(RegraVioladaException e) {
+        String mensagemDeErro = e.getMessage();
+        return buildErrorResponse(mensagemDeErro);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EntidadeEmUsoException.class)
+    public ErrorBody handleEntidadeEmUsoException(EntidadeEmUsoException e) {
+        String mensagemDeErro = e.getMessage();
+        return buildErrorResponse(mensagemDeErro);
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ErrorBody handleMethodArgumentNotValid(EntidadeNaoEncontradaException e) {
+    public ErrorBody handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
+
         String mensagemDeErro = e.getMessage();
         return buildErrorResponse(mensagemDeErro);
     }
