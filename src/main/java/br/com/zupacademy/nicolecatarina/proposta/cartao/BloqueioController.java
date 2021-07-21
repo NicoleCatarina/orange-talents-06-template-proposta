@@ -54,7 +54,7 @@ public class BloqueioController {
                 String userAgent = headers.get("user-agent");
 
                 Bloqueio novoBloqueio = new Bloqueio(remoteAddr, userAgent);
-                cartao.associarBloqueio(novoBloqueio);
+                cartao.bloquear(novoBloqueio);
                 return ResponseEntity.ok().build();
             }
         } catch (FeignException e) {

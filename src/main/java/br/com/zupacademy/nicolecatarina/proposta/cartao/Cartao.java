@@ -23,6 +23,8 @@ public class Cartao {
     private Long limite;
     private String renegociacao;
     private Long idProposta;
+    @Enumerated(EnumType.STRING)
+    private EstadoCartao estadoCartao = EstadoCartao.DESBLOQUEADO;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCartao")
     private List<Bloqueio> bloqueios;
@@ -84,11 +86,11 @@ public class Cartao {
         return numero;
     }
 
-    public void associarBloqueio(Bloqueio bloqueio) {
+    public void bloquear(Bloqueio bloqueio) {
         this.bloqueios.add(bloqueio);
     }
 
     public boolean estaBloqueado() {
-        return !this.bloqueios.isEmpty();
+        return this.estadoCartao.equals(EstadoCartao.BLOQUEADO);
     }
 }
