@@ -2,8 +2,13 @@ package br.com.zupacademy.nicolecatarina.proposta.cartao.aviso;
 
 import br.com.zupacademy.nicolecatarina.proposta.cartao.Cartao;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.CartaoRepository;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.AvisoViagemGatewayRequest;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.AvisoViagemGatewayResponse;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.CartaoClient;
 import br.com.zupacademy.nicolecatarina.proposta.exception.EntidadeNaoEncontradaException;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +27,9 @@ public class AvisoViagemController {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private CartaoClient cartaoClient;
+
     @Transactional
     @PostMapping
     public ResponseEntity criar(@PathVariable Long id,
@@ -30,13 +38,25 @@ public class AvisoViagemController {
         Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Não existe um cartão com id %d", id)));
 
-        String ipClienteDaRequisicao = request.getRemoteAddr();
-        String userAgent = headers.get("user-agent");
+        //TODO
+        //      Validar se o cartao já possui aviso de viagem no periodo informado, lançar RegraVioladaException caso possua
 
-        AvisoViagem novoAvisoDeViagem = avisoViagemRequest.toModel(ipClienteDaRequisicao, userAgent);
-        cartao.associarAvisoDeViagem(novoAvisoDeViagem);
+        AvisoViagemGatewayRequest gatewayRequest =
+                new AvisoViagemGatewayRequest(avisoViagemRequest.getDestino(), avisoViagemRequest.getDataTermino());
 
-        return ResponseEntity.ok().build();
+        try {
+            AvisoViagemGatewayResponse gatewayResponse = cartaoClient.criarAvisoDeViagem(cartao.getNumero(), gatewayRequest);
+
+            String ipClienteDaRequisicao = request.getRemoteAddr();
+            String userAgent = headers.get("user-agent");
+
+            AvisoViagem novoAvisoDeViagem = avisoViagemRequest.toModel(ipClienteDaRequisicao, userAgent);
+            cartao.associarAvisoDeViagem(novoAvisoDeViagem);
+            return ResponseEntity.ok().build();
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 
 }
