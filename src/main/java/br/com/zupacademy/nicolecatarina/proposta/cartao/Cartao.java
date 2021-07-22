@@ -1,6 +1,6 @@
 package br.com.zupacademy.nicolecatarina.proposta.cartao;
 
-import br.com.zupacademy.nicolecatarina.proposta.cartao.aviso.Aviso;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.aviso.AvisoViagem;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.carteira.Carteira;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.parcela.Parcela;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.vencimento.Vencimento;
@@ -30,13 +30,11 @@ public class Cartao {
     private List<Bloqueio> bloqueios;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCartao")
-    private List<Aviso> avisos;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idCartao")
     private List<Carteira> carteiras;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCartao")
     private List<Parcela> parcelas;
+    private List<AvisoViagem> avisosViagem;
 
     //TODO
     //fazer relacionamento para salvar o id do cartao no vencimento, onetomany foi workaround
@@ -92,5 +90,9 @@ public class Cartao {
 
     public boolean estaBloqueado() {
         return this.estadoCartao.equals(EstadoCartao.BLOQUEADO);
+    }
+
+    public void associarAvisoDeViagem(AvisoViagem avisoViagem) {
+        this.avisosViagem.add(avisoViagem);
     }
 }
