@@ -46,7 +46,6 @@ public class BloqueioController {
                             new BloqueioCartaoGatewayRequest("sistema de propostas")
                     );
 
-            System.out.println("gatewayResponse.getResultado() = " + gatewayResponse.getResultado());
 
             if (gatewayResponse.getResultado().equals(BloqueioCartaoResultado.BLOQUEADO)) {
                 //        String ip = request.getHeader("x-forwarded-for");

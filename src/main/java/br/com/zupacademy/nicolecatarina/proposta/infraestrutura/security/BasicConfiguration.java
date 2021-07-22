@@ -1,4 +1,4 @@
-package br.com.zupacademy.nicolecatarina.proposta.security;
+package br.com.zupacademy.nicolecatarina.proposta.infraestrutura.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
