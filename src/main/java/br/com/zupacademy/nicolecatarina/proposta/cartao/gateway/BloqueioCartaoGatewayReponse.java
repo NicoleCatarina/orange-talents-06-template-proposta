@@ -1,7 +1,5 @@
 package br.com.zupacademy.nicolecatarina.proposta.cartao.gateway;
 
-import br.com.zupacademy.nicolecatarina.proposta.cartao.BloqueioCartaoResultado;
-
 public class BloqueioCartaoGatewayReponse {
 
     private BloqueioCartaoResultado resultado;
