@@ -2,6 +2,7 @@ package br.com.zupacademy.nicolecatarina.proposta.cartao.gateway;
 
 import br.com.zupacademy.nicolecatarina.proposta.cartao.Cartao;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.gateway.*;
+import br.com.zupacademy.nicolecatarina.proposta.proposta.Proposta;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +14,7 @@ public class GeracaoCartaoGatewayResponse {
     private String titular;
     private String idProposta;
     private Long limite;
-    private List<BloqueioGatewayResponse> bloqueios;
+    private List<BloqueioCartaoGatewayReponse> bloqueios;
     private List<AvisoGatewayResponse> avisos;
     private List<CarteiraGatewayResponse> carteiras;
     private List<ParcelaGatewayResponse> parcelas;
@@ -21,7 +22,7 @@ public class GeracaoCartaoGatewayResponse {
     private String renegociacao;
 
     public GeracaoCartaoGatewayResponse(String id, LocalDateTime emitidoEm, String titular, String idProposta,
-                                        Long limite, List<BloqueioGatewayResponse> bloqueios,
+                                        Long limite, List<BloqueioCartaoGatewayReponse> bloqueios,
                                         List<AvisoGatewayResponse> avisos, List<CarteiraGatewayResponse> carteiras,
                                         List<ParcelaGatewayResponse> parcelas, VencimentoGatewayResponse vencimento,
                                         String renegociacao) {
@@ -38,9 +39,10 @@ public class GeracaoCartaoGatewayResponse {
         this.renegociacao = renegociacao;
     }
 
-    public Cartao toModel() {
+    public Cartao toModel(Proposta proposta) {
         return new Cartao(this.id, this.emitidoEm, this.titular, this.limite, this.renegociacao,
-                Long.parseLong(this.idProposta), this.vencimento.toModel());
+                proposta, this.vencimento.toModel());
+
     }
 
 }

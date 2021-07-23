@@ -11,7 +11,7 @@ public interface PropostaRepository extends JpaRepository<Proposta, Long>,
 
     boolean existsByDocumento(String documento);
 
-    @Query("SELECT p from Proposta p left join Cartao c on p.id = c.idProposta where c.id is null and p.propostaEstado = 'ELEGIVEL'")
+    @Query("SELECT p from Proposta p left join Cartao c on p.id = c.proposta.id where c.id is null and p.propostaEstado = 'ELEGIVEL'")
     List<Proposta> buscarPropostasComStatusElegivelQueNaoPossuemCartao();
 
 }

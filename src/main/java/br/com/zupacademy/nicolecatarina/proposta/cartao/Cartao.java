@@ -2,8 +2,10 @@ package br.com.zupacademy.nicolecatarina.proposta.cartao;
 
 import br.com.zupacademy.nicolecatarina.proposta.cartao.aviso.AvisoViagem;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.carteira.Carteira;
+import br.com.zupacademy.nicolecatarina.proposta.cartao.carteira.ProvedorCarteira;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.parcela.Parcela;
 import br.com.zupacademy.nicolecatarina.proposta.cartao.vencimento.Vencimento;
+import br.com.zupacademy.nicolecatarina.proposta.proposta.Proposta;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
@@ -22,7 +24,8 @@ public class Cartao {
     private String titular;
     private Long limite;
     private String renegociacao;
-    private Long idProposta;
+    @OneToOne
+    private Proposta proposta;
     @Enumerated(EnumType.STRING)
     private EstadoCartao estadoCartao = EstadoCartao.DESBLOQUEADO;
     @OneToMany(cascade = CascadeType.ALL)
@@ -62,13 +65,13 @@ public class Cartao {
     //TODO
     //      Refatorar para nao receber idProposta e usar o cascade da classe Proposta
     public Cartao(String numero, LocalDateTime emitidoEm, String titular, Long limite, String renegociacao,
-                  Long idProposta, Vencimento vencimento) {
+                  Proposta proposta, Vencimento vencimento) {
         this.numero = numero;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
         this.limite = limite;
         this.renegociacao = renegociacao;
-        this.idProposta = idProposta;
+        this.proposta = proposta;
         this.vencimento = Collections.singletonList(vencimento);
     }
 
@@ -94,5 +97,18 @@ public class Cartao {
 
     public void associarAvisoDeViagem(AvisoViagem avisoViagem) {
         this.avisosViagem.add(avisoViagem);
+    }
+
+    public String getEmailDoDono() {
+        return this.proposta.getEmail();
+    }
+
+    public void associarCarteira(Carteira carteira) {
+        this.carteiras.add(carteira);
+    }
+
+    public boolean jaEhAssociadoACarteira(ProvedorCarteira provedor) {
+        return this.carteiras.stream()
+                .anyMatch(carteira -> carteira.getCarteira().equals(provedor));
     }
 }
