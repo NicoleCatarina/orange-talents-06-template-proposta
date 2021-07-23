@@ -11,20 +11,19 @@ public class Carteira {
     private String identificador;
     private String email;
     @Enumerated(EnumType.STRING)
-    private ProvedorCarteira carteira;
-
+    private ProvedorCarteira provedor;
     private Long idCartao;
 
-    public Carteira(String identificador, String email, ProvedorCarteira carteira) {
+    public Carteira(String identificador, String email, ProvedorCarteira provedor) {
         this.identificador = identificador;
         this.email = email;
-        this.carteira = carteira;
+        this.provedor = provedor;
     }
 
     public Carteira() {
     }
 
-    public ProvedorCarteira getCarteira() {
-        return carteira;
+    public ProvedorCarteira getProvedor() {
+        return provedor;
     }
 }

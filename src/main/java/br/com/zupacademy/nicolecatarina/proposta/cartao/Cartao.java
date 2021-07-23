@@ -109,6 +109,6 @@ public class Cartao {
 
     public boolean jaEhAssociadoACarteira(ProvedorCarteira provedor) {
         return this.carteiras.stream()
-                .anyMatch(carteira -> carteira.getCarteira().equals(provedor));
+                .anyMatch(carteira -> carteira.getProvedor().equals(provedor));
     }
 }
