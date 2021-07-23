@@ -9,6 +9,8 @@ import feign.FeignException;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Timer;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +45,9 @@ public class PropostaController {
 
     @Autowired
     private MeterRegistry meterRegistry;
+
+    @Autowired
+    private Tracer tracer;
 
     @GetMapping("/{id}")
     public ResponseEntity buscar(@PathVariable Long id) {
@@ -83,6 +88,11 @@ public class PropostaController {
         //      Refatorar também para caso o link não responda (tirar setEstadoProposta do catch)
 
         try {
+            Span activeSpan = tracer.activeSpan();
+            activeSpan.setTag("user.email", "nicolecatarina@hotmail.com");
+            activeSpan.log("Meu log");
+            activeSpan.setBaggageItem("user.email", "nicolecatarina@hotmail.com");
+
             var validacaoRequest = new AnaliseFinanceiraRequest(
                     String.valueOf(novaProposta.getId()),
                     novaProposta.getDocumento(),
